@@ -51,40 +51,46 @@ def grfk():
    tım=int(sr.get())
    """Faiz hesaplama sıklığı  """
    fahe=int(fhs.get())
-
-   """ bileşik faiz """
    a=bucket * (1 + (yy / (fahe * 100))) ** (fahe * tım )
+   bakye=bucket
+   bakyem=[]
+   """ bileşik faiz aylık """
+
    
- 
+   for ay  in range(1 , tım * 12 + 1):
+     bakye += bakye * tım
+     bakyem.append(bakye)
+
+   lbl.config(text=f"{mn} Yüzde Getiri: {yy:.2f}% \nBaşlangıç Miktarı: {bucket} \n{tım} Yıl Sonrası Bakiye: {bakyem[-1]:.2f}")
 
 
 
+    
 
-   lbl=tk.Label(maıın, text=f"{mn}: {yy} , \n bütce: {bucket}  \n  {bte} olur  \n bileşik faiz: {a}  "    , font=('Helvetica', 12))
-   lbl.pack()
+   
+   """ bileşik faiz grafığı  """
+
+   plt.plot(range(1, tım + 1 ), bakyem )
+   plt.grid(True)
+   plt.show()
 
 """ hisse seç """
 oe=tk.OptionMenu(maıın, sec_hısse ,*hisseler )
 oe.pack()
 
-""" yatırlacak para """
-
-
+""" başlangıcda yatırlacak para """
 mnysv=tk.Entry(maıın)
 mnysv.pack()
 
-""" süre """
+""" süre yıl olarak yazılmalı """
 sr=tk.Entry(maıın )
 sr.pack()
 
 
 
-""" faiz hesaplama sıklığpı  """
+""" faiz hesaplama sıklığpı   Kullanıcı burada faiz hesaplamanın yıllık kaç defa yapılacağını belirtir (örneğin yıllık için 1, aylık için 12 gibi)."""
 fhs=tk.Entry(maıın)
 fhs.pack()
-
-
-
 
 
 hspl=tk.Button(maıın, text='hesapla', command=grfk)
