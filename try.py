@@ -8,8 +8,6 @@ import datetime
 
 
 
-
-
 maıın=tk.Tk()
 
 maıın.title("dene")
@@ -49,58 +47,49 @@ def grfk():
 
    """ bütcenin yüzdesini almak  """
    bte=(bucket *(1 + (yy /100)))
+   """ kaç yıl hesaplanacağı """
+   tım=int(sr.get())
+   """Faiz hesaplama sıklığı  """
+   fahe=int(fhs.get())
 
-
+   """ bileşik faiz """
+   a=bucket * (1 + (yy / (fahe * 100))) ** (fahe * tım )
    
+ 
 
 
-   lbl=tk.Label(maıın, text=f"{mn}: {yy} , \n  {bucket} birim para , yükselerek  {bte} olur   "  , font=('Helvetica', 12))
+
+
+   lbl=tk.Label(maıın, text=f"{mn}: {yy} , \n bütce: {bucket}  \n  {bte} olur  \n bileşik faiz: {a}  "    , font=('Helvetica', 12))
    lbl.pack()
 
+""" hisse seç """
+oe=tk.OptionMenu(maıın, sec_hısse ,*hisseler )
+oe.pack()
+
+""" yatırlacak para """
 
 
 mnysv=tk.Entry(maıın)
 mnysv.pack()
 
-oe=tk.OptionMenu(maıın, sec_hısse ,*hisseler )
-oe.pack()
+""" süre """
+sr=tk.Entry(maıın )
+sr.pack()
+
+
+
+""" faiz hesaplama sıklığpı  """
+fhs=tk.Entry(maıın)
+fhs.pack()
+
+
+
 
 
 hspl=tk.Button(maıın, text='hesapla', command=grfk)
 hspl.pack()
 
-
-
-""" ikinci sayfa   """
-
-def twopages():
-  
-
-  scn=tk.Toplevel(maıın)
-  scn.title("risk seviyeleri ")
-  scn.geometry("500x500")
-
-  hissele = ['AAPL', 'MSFT', 'GOOGL', 'TSLA', 'AMZN', 'NFLX', 'NVDA', 'PYPL', 'BABA']
-  dataa = yf.download(hissele, start='2023-01-01', end='2023-12-31')['Adj Close']
-
-  daily_retun=dataa.pct_change().dropna()  
-  """ Günlük ortalama getiriyi ve günlük getirilerin standart sapmasını hesaplayın """  
-  mean_daily_return=daily_retun.mean()
-  std_dev_daily_return=daily_retun.std()  
-  """ Yıllık getiri ve oynaklık """  
-  annualized_return=mean_daily_return* 252 # 252 trading days in a year
-  annualized_std_dev=  std_dev_daily_return* np.sqrt(252)  
-  """ risk """  
-  risk_free_rate= 0.02  
-  sharpe_ratio=(annualized_return - risk_free_rate )/ annualized_std_dev
-  print(f"{sharpe_ratio}")
-  rısk_wıea=tk.Label(scn, text=f"risk : {sharpe_ratio}")
-  rısk_wıea.pack()
-
-
-
-geç=tk.Button(maıın,text='rısk sevıyeleri', command=twopages )
-geç.pack()
 
 
 maıın.mainloop()
