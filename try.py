@@ -16,88 +16,66 @@ maıın.geometry("500x500")
 
 
 
-hisseler = ['AAPL', 'MSFT', 'GOOGL', 'TSLA', 'AMZN', 'NFLX', 'NVDA', 'PYPL', 'BABA']
-""" değişken tanımlama """
-sec_hısse=tk.StringVar()
-sec_hısse.set(hisseler[0])
+def hspa():
+    p=float(ana_money.get())
+    r=float(rate.get())/ 100
+    t=float(yas.get())
+    n=12
+    pmt=float(mount_money.get())
 
-
-
-def grfk():
-   global bucket 
-   global yy
-
-   
-   """ bütcenin yüzdesini almak  almak  """
- 
-   bucket=float( mnysv.get())
-   mn=sec_hısse.get()
-   
-
-   strt=datetime.datetime.now()
-   sn=datetime.datetime(strt.year , 1,1)
-
-   sok=yf.download(mn, start=sn , end=strt)
-
-   yılbs=sok['Close'].iloc[0]
-   gncl=sok['Close'].iloc[-1]
-
-   """ hisse senedinin yılbaşından bu yana  yüzde getirisi  """
-   yy=((gncl-yılbs)/yılbs)*100
-
-   """ bütcenin yüzdesini almak  """
-   bte=(bucket *(1 + (yy /100)))
-   """ kaç yıl hesaplanacağı """
-   tım=int(sr.get())
-   """Faiz hesaplama sıklığı  """
-   fahe=int(fhs.get())
-   a=bucket * (1 + (yy / (fahe * 100))) ** (fahe * tım )
-   bakye=bucket
-   bakyem=[]
-   """ bileşik faiz aylık """
-
-   
-   for ay  in range(1 , tım * 12 + 1):
-     bakye += bakye * tım
-     bakyem.append(bakye)
-
-   lbl.config(text=f"{mn} Yüzde Getiri: {yy:.2f}% \nBaşlangıç Miktarı: {bucket} \n{tım} Yıl Sonrası Bakiye: {bakyem[-1]:.2f}")
-
-
+    bf=p*(1 + r / n )**(n * t) #ana para üzerinden hesaplama
+    bf += pmt * (((1 + r / n) ** (n * t)-1) / (r / n) ) 
+    wiev.config(text=f" {bf:,.2f}")
+    
 
     
 
-   
-   """ bileşik faiz grafığı  """
+    
+ğ=tk.Label(maıın, text="vade oranı 12 aydır " )
+ğ.pack()
 
-   plt.plot(range(1, tım + 1 ), bakyem )
-   plt.grid(True)
-   plt.show()
+    
 
-""" hisse seç """
-oe=tk.OptionMenu(maıın, sec_hısse ,*hisseler )
-oe.pack()
-
-""" başlangıcda yatırlacak para """
-mnysv=tk.Entry(maıın)
-mnysv.pack()
-
-""" süre yıl olarak yazılmalı """
-sr=tk.Entry(maıın )
-sr.pack()
+""" ana para """   
+d=tk.Label(maıın, text="başlangıç parası" )
+d.pack()
+ana_money=tk.Entry(maıın)
+ana_money.pack()    
 
 
+"""aylık  yatırlacak para """
+a=tk.Label(maıın, text="aylık-yatırılacak-para" )
+a.pack()
+mount_money=tk.Entry(maıın)
+mount_money.pack()
 
-""" faiz hesaplama sıklığpı   Kullanıcı burada faiz hesaplamanın yıllık kaç defa yapılacağını belirtir (örneğin yıllık için 1, aylık için 12 gibi)."""
-fhs=tk.Entry(maıın)
-fhs.pack()
+
+""" faiz oranı """
+b=tk.Label(maıın, text="faiz-oranı" )
+b.pack()
+rate=tk.Entry(maıın)
+rate.pack()
 
 
-hspl=tk.Button(maıın, text='hesapla', command=grfk)
+
+
+
+""" yıl sayısı  """
+c=tk.Label(maıın, text="kaç-yıl-yatırlacak" )
+c.pack()
+yas=tk.Entry(maıın)
+yas.pack()
+
+
+
+
+wiev=tk.Label(maıın )
+wiev.pack()
+
+hspl=tk.Button(maıın, text='hesapla', command=hspa)
 hspl.pack()
 
 
 
 maıın.mainloop()
-
 
